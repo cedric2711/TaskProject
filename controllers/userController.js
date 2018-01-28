@@ -42,11 +42,13 @@ userController.list = function(req, res) {
 
 userController.add = function(req, res) {
     debugger;
-    var name = (req.query.name != '') ? req.query.name : '';
-    var password = (req.query.password != '') ? req.query.password : '';
+    var name = (req.body.name != '') ? req.body.name : '';
+    var password = (req.body.password != '') ? req.body.password : '';
+    var username = (req.body.userName != '') ? req.body.userName : '';
     var data = {
         name: name,
-        password: password
+        password: password,
+        username: username
     }
     var user = new User(data);
     user.save(function(err) {
