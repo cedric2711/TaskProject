@@ -1,5 +1,6 @@
 function drawPage() {
-    var url = "/task/getAll/?user=" + getUser();
+    //var url = "/task/getAll/?user=" + getUser();
+    var url = "/task/getAll/";
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -68,7 +69,7 @@ function addSubTask(id, textVal) {
     } else {
         url = '/task/add/?name=' + textVal;
     }
-    url += "&user=" + getUser();
+    //  url += "&user=" + getUser();
     $.ajax({
         type: "POST",
         dataType: "json",
@@ -84,7 +85,8 @@ function addSubTask(id, textVal) {
 }
 
 function deleteTask(id) {
-    var url = '/task/delete/' + id + '&user=' + getUser();
+    //  var url = '/task/delete/' + id + '&user=' + getUser();
+    var url = '/task/delete/' + id;
     $.ajax({
         type: "POST",
         dataType: "json",
@@ -104,7 +106,7 @@ function deleteTask(id) {
 function filterData(status, priority) {
     var url = '';
 
-    url = '/task/filter/?status=' + status + '&priority=' + priority + '&user=' + getUser();
+    url = '/task/filter/?status=' + status + '&priority=' + priority; // + '&user=' + getUser();
 
     $.ajax({
         type: "POST",

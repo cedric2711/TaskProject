@@ -60,16 +60,19 @@ function nestData(tasks) {
     return newTaskOrder;
 }
 taskController.list = function(req, res) {
+    if (req.session.user == undefined) {
+        res.redirect("/");
+    }
     Tasks.find({
-        'user': req.query.user
+        'user': req.session.user
     }).exec(function(err, tasks) {
         if (err) {
             console.log("Error:", err);
         } else {
             debugger;
             var user = '';
-            if (req.query.user != '') {
-                user = req.query.user;
+            if (req.session.user != '') {
+                user = req.session.user;
             } else {
                 res.redirect("/");
             }
@@ -83,7 +86,7 @@ taskController.list = function(req, res) {
 };
 taskController.getAll = function(req, res) {
     Tasks.find({
-        'user': req.query.user
+        'user': req.session.user
     }).exec(function(err, tasks) {
         if (err) {
             console.log("Error:", err);
@@ -103,7 +106,7 @@ taskController.filter = function(req, res) {
     if (req.query.priority != '') {
         query['priority'] = req.query.priority;
     }
-    query['user'] = req.query.user;
+    query['user'] = req.session.user;
 
     Tasks.find(query).exec(function(err, tasks) {
         if (err) {
@@ -125,7 +128,7 @@ taskController.add = function(req, res) {
         status: "New",
         priority: "Medium",
         parent: parentID,
-        user: req.query.user
+        user: req.session.user
     }
     var task = new Tasks(data);
     task.save(function(err) {
@@ -133,7 +136,8 @@ taskController.add = function(req, res) {
             console.log(err);
         } else {
             console.log("successfully added task");
-            res.redirect("/task/getAll/?user=" + req.query.user);
+            //  res.redirect("/task/getAll/?user=" + req.query.user);
+            res.redirect("/task/getAll/");
         }
     });
 };
@@ -153,7 +157,6 @@ taskController.updateSingle = function(req, res) {
             console.log(err);
 
         }
-        req.query.key;
         console.log("update completed");
         if (req.query.key != 'name') {
             res.json({
@@ -174,7 +177,7 @@ taskController.delete = function(req, res) {
             console.log(err);
         } else {
             console.log("Tasks deleted!");
-            res.redirect("/task/getAll/?user=" + req.query.user);
+            res.redirect("/task/getAll/");
         }
     });
 };

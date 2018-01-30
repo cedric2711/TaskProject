@@ -19,6 +19,7 @@ userController.validate = function(req, res) {
             if (task == null) {
                 res.redirect("/");
             } else {
+                req.session.user = req.body.name;
                 res.redirect("/task/?user=" + req.body.name);
             }
         }
@@ -59,5 +60,11 @@ userController.add = function(req, res) {
             res.redirect("/");
         }
     });
+};
+userController.logout = function(req, res) {
+    debugger;
+    req.session.user = undefined;
+    res.redirect("/");
+
 };
 module.exports = userController;
