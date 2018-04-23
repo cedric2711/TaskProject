@@ -1,6 +1,10 @@
 function drawPage() {
+<<<<<<< HEAD
     //var url = "/task/getAll/?user=" + getUser();
     var url = "/task/getAll/";
+=======
+    var url = "/task/getAll/";//"?user=" + getUser();
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -69,7 +73,11 @@ function addSubTask(id, textVal) {
     } else {
         url = '/task/add/?name=' + textVal;
     }
+<<<<<<< HEAD
     //  url += "&user=" + getUser();
+=======
+  //  url += "&user=" + getUser();
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     $.ajax({
         type: "POST",
         dataType: "json",
@@ -85,8 +93,12 @@ function addSubTask(id, textVal) {
 }
 
 function deleteTask(id) {
+<<<<<<< HEAD
     //  var url = '/task/delete/' + id + '&user=' + getUser();
     var url = '/task/delete/' + id;
+=======
+    var url = '/task/delete/' + id;// + '&user=' + getUser();
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     $.ajax({
         type: "POST",
         dataType: "json",
@@ -106,7 +118,11 @@ function deleteTask(id) {
 function filterData(status, priority) {
     var url = '';
 
+<<<<<<< HEAD
     url = '/task/filter/?status=' + status + '&priority=' + priority; // + '&user=' + getUser();
+=======
+    url = '/task/filter/?status=' + status + '&priority=' + priority;// + '&user=' + getUser();
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
 
     $.ajax({
         type: "POST",

@@ -8,67 +8,81 @@ var newOrder = [];
 var taskObj = {};
 
 function nestData(tasks) {
-    newTaskOrder = [];
-    taskObj = {};
-    _.each(tasks, function(task) {
-        if (task.parent == '' || task.parent == null) {
-            if (_.isUndefined(taskObj[''])) {
-                taskObj[''] = {};
-            }
-            taskObj[''][task._id] = {
-                'name': task.name,
-                'status': task.status,
-                'priority': task.priority,
-                'parent': task.parent,
-                'user': task.user,
-                '_id': task._id,
-                'children': {},
-                '_level': 0
-            }
-        } else {
-            if (_.isUndefined(taskObj[task.parent])) {
-                taskObj[task.parent] = {};
-            }
-            taskObj[task.parent][task._id] = {
-                'name': task.name,
-                'status': task.status,
-                'priority': task.priority,
-                'parent': task.parent,
-                'user': task.user,
-                '_id': task._id,
-                'children': {},
-                '_level': 0
-            }
-        }
-    });
-    _.each(taskObj[''], function(parentRow, parentId) {
-        newTaskOrder.push(parentRow);
-        getChildren(parentRow, parentId);
-
-    });
-
-    function getChildren(parentRow, parentId) {
-        _.each(taskObj[parentId], function(childObj, childId) {
-            parentRow.children[childId] = childObj;
-            childObj._level = parentRow._level + 1;
-            newTaskOrder.push(childObj);
-            if (taskObj[childId]) {
-                getChildren(childObj, childId);
-            }
-        });
+  newTaskOrder = [];
+  taskObj = {};
+  _.each(tasks, function(task) {
+    if (task.parent == '' || task.parent == null) {
+      if (_.isUndefined(taskObj[''])) {
+        taskObj[''] = {};
+      }
+      taskObj[''][task._id] = {
+        'name': task.name,
+        'status': task.status,
+        'priority': task.priority,
+        'parent': task.parent,
+        'user': task.user,
+        '_id': task._id,
+        'children': {},
+        '_level': 0
+      }
+    } else {
+      if (_.isUndefined(taskObj[task.parent])) {
+        taskObj[task.parent] = {};
+      }
+      taskObj[task.parent][task._id] = {
+        'name': task.name,
+        'status': task.status,
+        'priority': task.priority,
+        'parent': task.parent,
+        'user': task.user,
+        '_id': task._id,
+        'children': {},
+        '_level': 0
+      }
     }
-    return newTaskOrder;
+  });
+  _.each(taskObj[''], function(parentRow, parentId) {
+    newTaskOrder.push(parentRow);
+    getChildren(parentRow, parentId);
+
+  });
+
+  function getChildren(parentRow, parentId) {
+    _.each(taskObj[parentId], function(childObj, childId) {
+      parentRow.children[childId] = childObj;
+      childObj._level = parentRow._level + 1;
+      newTaskOrder.push(childObj);
+      if (taskObj[childId]) {
+        getChildren(childObj, childId);
+      }
+    });
+  }
+  return newTaskOrder;
 }
 taskController.list = function(req, res) {
+<<<<<<< HEAD
     if (req.session.user == undefined) {
         res.redirect("/");
     }
     Tasks.find({
         'user': req.session.user
+=======
+  if (req.session.user == undefined) {
+    res.redirect("/");
+  } else {
+    Tasks.find({
+      'user': req.session.user
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     }).exec(function(err, tasks) {
-        if (err) {
-            console.log("Error:", err);
+      if (err) {
+        console.log("Error:", err);
+      } else {
+        debugger;
+        var user = '';
+        if (req.session.user != '') {
+          user = req.session.user;
         } else {
+<<<<<<< HEAD
             debugger;
             var user = '';
             if (req.session.user != '') {
@@ -81,49 +95,74 @@ taskController.list = function(req, res) {
                 task: orderedTasks,
                 user: user
             });
+=======
+          res.redirect("/");
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
         }
+        var orderedTasks = nestData(tasks)
+        res.render("../views/tasks/index", {
+          task: orderedTasks,
+          user: user
+        });
+      }
     });
+  }
 };
 taskController.getAll = function(req, res) {
+  if (req.session.user == undefined) {
+    res.redirect("/");
+  } else {
     Tasks.find({
+<<<<<<< HEAD
         'user': req.session.user
+=======
+      'user': req.session.user
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     }).exec(function(err, tasks) {
-        if (err) {
-            console.log("Error:", err);
-        } else {
-            var orderedTasks = nestData(tasks)
-            res.json(orderedTasks);
-        }
+      if (err) {
+        console.log("Error:", err);
+      } else {
+        var orderedTasks = nestData(tasks)
+        res.json(orderedTasks);
+      }
     });
+  }
 };
 
 taskController.filter = function(req, res) {
-    debugger;
+  if (req.session.user == undefined) {
+    res.redirect("/");
+  } else {
     var query = {};
     if (req.query.status != '') {
-        query['status'] = req.query.status;
+      query['status'] = req.query.status;
     }
     if (req.query.priority != '') {
-        query['priority'] = req.query.priority;
+      query['priority'] = req.query.priority;
     }
     query['user'] = req.session.user;
 
     Tasks.find(query).exec(function(err, tasks) {
-        if (err) {
-            console.log("Error:", err);
-        } else {
-            var orderedTasks = nestData(tasks)
-            res.json(orderedTasks);
-        }
+      if (err) {
+        console.log("Error:", err);
+      } else {
+        var orderedTasks = nestData(tasks)
+        res.json(orderedTasks);
+      }
     });
+  }
 };
 
 
 taskController.add = function(req, res) {
+  if (req.session.user == undefined) {
+    res.redirect("/");
+  } else {
     debugger;
     var parentID = (req.query.id != undefined) ? req.query.id : '';
     var name = (req.query.name != undefined) ? req.query.name : '';
     var data = {
+<<<<<<< HEAD
         name: name,
         status: "New",
         priority: "Medium",
@@ -139,23 +178,43 @@ taskController.add = function(req, res) {
             //  res.redirect("/task/getAll/?user=" + req.query.user);
             res.redirect("/task/getAll/");
         }
+=======
+      name: name,
+      status: "New",
+      priority: "Medium",
+      parent: parentID,
+      user: req.session.user
+    }
+    var task = new Tasks(data);
+    task.save(function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("successfully added task");
+        res.redirect("/task/getAll/");
+      }
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     });
+  }
 };
 
 
 
 taskController.updateSingle = function(req, res) {
-    debugger;
+  if (req.session.user == undefined) {
+    res.redirect("/");
+  } else {
     var requiedSet = {};
     requiedSet[req.query.key] = req.query.value;
     Tasks.findByIdAndUpdate(req.params.id, {
-        $set: requiedSet
+      $set: requiedSet
     }, {
-        new: true
+      new: true
     }, function(err, task) {
-        if (err) {
-            console.log(err);
+      if (err) {
+        console.log(err);
 
+<<<<<<< HEAD
         }
         console.log("update completed");
         if (req.query.key != 'name') {
@@ -165,31 +224,57 @@ taskController.updateSingle = function(req, res) {
                 "id": req.params.id
             });
         }
+=======
+      }
+      req.query.key;
+      console.log("update completed");
+      if (req.query.key != 'name') {
+        res.json({
+          "val": req.query.value,
+          "key": req.query.key,
+          "id": req.params.id
+        });
+      }
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
 
     });
+  }
 };
 
 taskController.delete = function(req, res) {
+  if (req.session.user == undefined) {
+    res.redirect("/");
+  } else {
     Tasks.remove({
-        _id: req.params.id
+      _id: req.params.id
     }, function(err) {
+<<<<<<< HEAD
         if (err) {
             console.log(err);
         } else {
             console.log("Tasks deleted!");
             res.redirect("/task/getAll/");
         }
+=======
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Tasks deleted!");
+        res.redirect("/task/getAll/");
+      }
+>>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     });
+  }
 };
 
 taskController.deleteAll = function(req, res) {
-    mongoose.connection.collections['tasks'].drop(function(err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('collection dropped');
-        }
-    });
+  mongoose.connection.collections['tasks'].drop(function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('collection dropped');
+    }
+  });
 };
 
 module.exports = taskController;
