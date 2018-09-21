@@ -60,19 +60,11 @@ function nestData(tasks) {
   return newTaskOrder;
 }
 taskController.list = function(req, res) {
-<<<<<<< HEAD
-    if (req.session.user == undefined) {
-        res.redirect("/");
-    }
-    Tasks.find({
-        'user': req.session.user
-=======
   if (req.session.user == undefined) {
     res.redirect("/");
   } else {
     Tasks.find({
       'user': req.session.user
->>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     }).exec(function(err, tasks) {
       if (err) {
         console.log("Error:", err);
@@ -82,22 +74,7 @@ taskController.list = function(req, res) {
         if (req.session.user != '') {
           user = req.session.user;
         } else {
-<<<<<<< HEAD
-            debugger;
-            var user = '';
-            if (req.session.user != '') {
-                user = req.session.user;
-            } else {
-                res.redirect("/");
-            }
-            var orderedTasks = nestData(tasks)
-            res.render("../views/tasks/index", {
-                task: orderedTasks,
-                user: user
-            });
-=======
           res.redirect("/");
->>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
         }
         var orderedTasks = nestData(tasks)
         res.render("../views/tasks/index", {
@@ -113,11 +90,7 @@ taskController.getAll = function(req, res) {
     res.redirect("/");
   } else {
     Tasks.find({
-<<<<<<< HEAD
-        'user': req.session.user
-=======
       'user': req.session.user
->>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     }).exec(function(err, tasks) {
       if (err) {
         console.log("Error:", err);
@@ -162,23 +135,6 @@ taskController.add = function(req, res) {
     var parentID = (req.query.id != undefined) ? req.query.id : '';
     var name = (req.query.name != undefined) ? req.query.name : '';
     var data = {
-<<<<<<< HEAD
-        name: name,
-        status: "New",
-        priority: "Medium",
-        parent: parentID,
-        user: req.session.user
-    }
-    var task = new Tasks(data);
-    task.save(function(err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("successfully added task");
-            //  res.redirect("/task/getAll/?user=" + req.query.user);
-            res.redirect("/task/getAll/");
-        }
-=======
       name: name,
       status: "New",
       priority: "Medium",
@@ -193,7 +149,6 @@ taskController.add = function(req, res) {
         console.log("successfully added task");
         res.redirect("/task/getAll/");
       }
->>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     });
   }
 };
@@ -213,20 +168,8 @@ taskController.updateSingle = function(req, res) {
     }, function(err, task) {
       if (err) {
         console.log(err);
-
-<<<<<<< HEAD
-        }
-        console.log("update completed");
-        if (req.query.key != 'name') {
-            res.json({
-                "val": req.query.value,
-                "key": req.query.key,
-                "id": req.params.id
-            });
-        }
-=======
       }
-      req.query.key;
+
       console.log("update completed");
       if (req.query.key != 'name') {
         res.json({
@@ -235,7 +178,6 @@ taskController.updateSingle = function(req, res) {
           "id": req.params.id
         });
       }
->>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
 
     });
   }
@@ -248,21 +190,12 @@ taskController.delete = function(req, res) {
     Tasks.remove({
       _id: req.params.id
     }, function(err) {
-<<<<<<< HEAD
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Tasks deleted!");
-            res.redirect("/task/getAll/");
-        }
-=======
       if (err) {
         console.log(err);
       } else {
         console.log("Tasks deleted!");
         res.redirect("/task/getAll/");
       }
->>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
     });
   }
 };

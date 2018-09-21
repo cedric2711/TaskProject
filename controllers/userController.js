@@ -8,24 +8,6 @@ var newOrder = [];
 var taskObj = {};
 
 userController.validate = function(req, res) {
-<<<<<<< HEAD
-    User.findOne({
-        name: req.body.name,
-        password: req.body.password
-    }).exec(function(err, task) {
-        if (err) {
-            console.log("Error:", err);
-            res.redirect("/");
-        } else {
-            if (task == null) {
-                res.redirect("/");
-            } else {
-                req.session.user = req.body.name;
-                res.redirect("/task/?user=" + req.body.name);
-            }
-        }
-    });
-=======
   User.findOne({
     name: req.body.name,
     password: req.body.password
@@ -42,7 +24,6 @@ userController.validate = function(req, res) {
       }
     }
   });
->>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
 };
 
 userController.list = function(req, res) {

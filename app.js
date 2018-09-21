@@ -3,11 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-<<<<<<< HEAD
 var session = require('cookie-session');
-=======
-var session = require('cookie-session'); // Loads the piece of middleware for sessions
->>>>>>> 1c600a1c2a63c127aa7f57755dcf7019eaa23f49
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var _ = require("underscore-node");
